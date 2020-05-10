@@ -1,0 +1,10 @@
+> 10 May 2020 | 15:30
+	
+--| Fixes
+ - Fixed an issue where the game would crash when given only one word as input like "use" without a item
+
+--| Changes
+ - Added functionality for two worded items like "gun barrel" or "rusty key"
+ - Added Exit-Descriptions to Exit-Class
+ - Changed Take-function. Now the player can attempt to take items with a text response without the item actually being picked up.
+	exampke "take chest" -> "the chest is too heavy to be picked up"

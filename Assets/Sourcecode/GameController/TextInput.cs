@@ -27,6 +27,12 @@ public class TextInput : MonoBehaviour
             InputAction inputAction = gameController.InputActions[i];
             if (inputAction.keyword == seperatedInput[0])
             {
+                if (seperatedInput.Length == 1)
+                {
+                    InputComplete();
+                    return;
+                }
+
                 inputAction.RespondToInput(gameController, seperatedInput);
             }
         }

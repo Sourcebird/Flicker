@@ -108,8 +108,8 @@ public class InteractableItems : MonoBehaviour
                 Interaction interaction = GetInteraction(interactableObject, "take");
                 if (interaction != null)
                 {
-                    if (interaction.successful == false) ;
-                    return takeDictionary;
+                    if (interaction.successful == false)
+                        return takeDictionary;
                 }
 
                 ItemsInInventory.Add(item);

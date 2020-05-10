@@ -27,9 +27,24 @@ public class RoomNavigation : MonoBehaviour
         if (exitDictionary.ContainsKey(direction))
         {
             bool silent = currentRoom.SuppressLeave;
+            string message = null;
+            for (int i = 0; i < currentRoom.exits.Length; i++)
+            {
+                Exit exit = currentRoom.exits[i];
+                if (exit.keyString == direction)
+                    message = exit.exitMessage;
+                else
+                    continue;
+            }
+
             currentRoom = exitDictionary[direction];
             if (!silent)
-                gameController.LogAction("You head off to the " + direction);
+            {
+                if (message != null)
+                    gameController.LogAction(message);
+                else
+                    gameController.LogAction("You head off to the " + direction);
+            }
             gameController.DisplayRoomText();
         } 
         else
