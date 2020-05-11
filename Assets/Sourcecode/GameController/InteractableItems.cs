@@ -89,6 +89,42 @@ public class InteractableItems : MonoBehaviour
         }
     }
 
+    public void AddItem(InteractableObject item, bool silent)
+    {
+        if (item != null)
+        {
+            if (itemList.Contains(item))
+            {
+                ItemsInInventory.Add(item.noun);
+                foreach (Interaction interaction in item.interactions)
+                {
+                    AddItemToDictionary(item.noun, interaction);
+                }
+
+                if (!silent)
+                    gameController.LogAction(item.description);
+            }
+        }
+    }
+
+    public void AddItemToDictionary(string noun, Interaction interaction)
+    {
+        switch (interaction.inputAction.keyword)
+        {
+            case "examine":
+                examineDictionary.Add(noun, interaction.textResponse);
+                break;
+            case "take":
+                takeDictionary.Add(noun, interaction.textResponse);
+                break;
+            case "eat":
+                eatDictionary.Add(noun, interaction.textResponse);
+                break;
+            default:
+                break;
+        }
+    }
+
     public void ClearCollections()
     {
         examineDictionary.Clear();

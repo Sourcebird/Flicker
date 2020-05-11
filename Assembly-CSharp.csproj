@@ -71,6 +71,7 @@
     <Compile Include="Assets\Sourcecode\Interaction.cs" />
     <Compile Include="Assets\Sourcecode\Inventory.cs" />
     <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\ActionResponse.cs" />
+    <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\ActionResponses\AddItemResponse.cs" />
     <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\ActionResponses\ChangeRoomResponse.cs" />
     <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\ActionResponses\EatRacoonResponse.cs" />
     <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\Actions\Eat.cs" />

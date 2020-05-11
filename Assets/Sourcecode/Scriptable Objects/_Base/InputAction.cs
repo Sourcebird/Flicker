@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class InputAction : ScriptableObject
 {
     public string keyword;
+    public bool multiword;
 
     public string CombineInput(string[] seperatedInput)
     {
