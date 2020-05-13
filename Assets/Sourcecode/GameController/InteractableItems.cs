@@ -1,11 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class InteractableItems : MonoBehaviour
 {
     public List<InteractableObject> itemList;
     public List<InteractableObject> usableItemList;
+
+    public List<Recipe> recipeList;
 
     public Dictionary<string, string> examineDictionary = new Dictionary<string, string>();
     public Dictionary<string, string> takeDictionary = new Dictionary<string, string>();
@@ -17,6 +23,8 @@ public class InteractableItems : MonoBehaviour
     private List<string> ItemsInInventory = new List<string>();
     private List<string> ItemsInVoid = new List<string>();
     private GameController gameController;
+
+    public Color ItemMarkupColor;
 
     private void Awake()
     {
@@ -30,10 +38,39 @@ public class InteractableItems : MonoBehaviour
         if (!ItemsInInventory.Contains(interactableObject.noun) && !ItemsInVoid.Contains(interactableObject.noun))
         {
             ItemsInRoom.Add(interactableObject.noun);
-            return interactableObject.description;
+
+            string markupDescription = interactableObject.description;
+            int index = markupDescription.IndexOf(interactableObject.noun);
+            markupDescription = Regex.Replace(markupDescription, @"\b" + interactableObject.noun + @"\b", "<color=#" + ColorUtility.ToHtmlStringRGB(ItemMarkupColor) + ">" + interactableObject.noun + "</color>");
+            return markupDescription;
         }
         else
             return null;
+    }
+
+    public string ReplaceWithMarkup(string replace, Color color)
+    {
+        string colorstring = ColorUtility.ToHtmlStringRGB(color);
+        return $"<color=#{colorstring}>{replace}</color>";
+    }
+    public string GetMarkupString(string description, string replace, Color color)
+    {
+        return GetMarkupString(description, new string[] { replace }, color);
+    }
+    public string GetMarkupString(string description, string[] replace, Color color)
+    {
+        string output = description;
+        foreach (string item in replace)
+        {
+            output = Regex.Replace(output, item, ReplaceWithMarkup(item, color));
+        }
+
+        return output;
+    }
+
+    public string SetItemColor(InteractableObject interactableObject, string source)
+    {
+        throw new NotImplementedException();
     }
 
     public void AddActionResponsesToUseDictionary()
@@ -135,6 +172,9 @@ public class InteractableItems : MonoBehaviour
 
     public Dictionary<string, string> Take (string[] seperatedInput)
     {
+        if (seperatedInput == null)
+            return null;
+
         string item = seperatedInput[1];
         if (ItemsInRoom.Contains(item))
         {
@@ -165,6 +205,9 @@ public class InteractableItems : MonoBehaviour
 
     public void UseItem(string[] seperatedInput)
     {
+        if (seperatedInput == null)
+            return;
+
         string item = seperatedInput[1];
         if (ItemsInInventory.Contains(item))
         {
@@ -198,6 +241,8 @@ public class InteractableItems : MonoBehaviour
 
     public void EatItem(string[] seperatedInput)
     {
+        if (seperatedInput == null)
+            return;
 
         string item = seperatedInput[1];
         if (ItemsInRoom.Contains(item) || ItemsInInventory.Contains(item))
@@ -241,6 +286,50 @@ public class InteractableItems : MonoBehaviour
         else
         {
             gameController.LogAction("There's no " + item + " to eat");
+        }
+    }
+
+    public void CombineItems(string[] seperatedInput)
+    {
+        if (seperatedInput == null)
+            return;
+
+        if (seperatedInput.Length >= 4)
+        {
+            if (ItemsInInventory.Contains(seperatedInput[1]) || ItemsInRoom.Contains(seperatedInput[1]) && ItemsInInventory.Contains(seperatedInput[3]) || ItemsInRoom.Contains(seperatedInput[3]))
+            {
+                foreach (Recipe recipe in recipeList)
+                {
+                    if (seperatedInput.Contains(recipe.ingredientOne.noun) && seperatedInput.Contains(recipe.ingredientTwo.noun))
+                    {
+                        AddItem(recipe.result, true);
+
+                        string description = recipe.craftingDescription;
+                        description = GetMarkupString(description, new string[] { seperatedInput[1], seperatedInput[3], recipe.result.noun }, ItemMarkupColor);
+
+                        Debug.Log(description);
+                        gameController.LogAction(description);
+
+                        if (ItemsInInventory.Contains(seperatedInput[1]))
+                            ItemsInInventory.Remove(seperatedInput[1]);
+                        else
+                            ItemsInRoom.Remove(seperatedInput[1]);
+
+                        if (ItemsInInventory.Contains(seperatedInput[3]))
+                            ItemsInInventory.Remove(seperatedInput[3]);
+                        else
+                            ItemsInRoom.Remove(seperatedInput[3]);
+
+                        return;
+                    }
+                }
+
+                string errorMsg = "you can't combine " + seperatedInput[1] + " with " + seperatedInput[3];
+                errorMsg = GetMarkupString(errorMsg, new string[] { seperatedInput[1], seperatedInput[3] }, ItemMarkupColor);
+                gameController.LogAction(errorMsg);
+            }
+            else
+                gameController.LogAction("You can't combine non-existing objects.");
         }
     }
 

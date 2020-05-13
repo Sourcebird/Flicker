@@ -5,12 +5,15 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Game/ActionResponses/Add Item")]
 public class AddItemResponse : ActionResponse
 {
-    public InteractableObject item;
+    public InteractableObject[] items;
     public bool silent;
 
     public override bool DoActionResponse(GameController gameController)
     {
-        gameController.interactableItems.AddItem(item, silent);
+        foreach (InteractableObject item in items)
+        {
+            gameController.interactableItems.AddItem(item, silent);
+        }
         return true;
     }
 }

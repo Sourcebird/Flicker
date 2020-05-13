@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class RoomNavigation : MonoBehaviour
@@ -18,7 +19,8 @@ public class RoomNavigation : MonoBehaviour
         for (int i = 0; i < currentRoom.exits.Length; i++)
         {
             exitDictionary.Add(currentRoom.exits[i].keyString, currentRoom.exits[i].valueRoom);
-            gameController.interactionsInRoom.Add(currentRoom.exits[i].exitDescription);         
+            string descripton = gameController.interactableItems.GetMarkupString(currentRoom.exits[i].exitDescription, currentRoom.exits[i].keyString, gameController.interactableItems.ItemMarkupColor);
+            gameController.interactionsInRoom.Add(descripton);         
         }
     }
 
@@ -28,11 +30,20 @@ public class RoomNavigation : MonoBehaviour
         {
             bool silent = currentRoom.SuppressLeave;
             string message = null;
+
             for (int i = 0; i < currentRoom.exits.Length; i++)
             {
                 Exit exit = currentRoom.exits[i];
                 if (exit.keyString == direction)
-                    message = exit.exitMessage;
+                { 
+                    if (exit.locked == true)
+                    {
+                        gameController.LogAction(exit.lockedMessage);
+                        return;
+                    }
+                    else
+                        message = exit.exitMessage;
+                }
                 else
                     continue;
             }

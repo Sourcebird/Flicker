@@ -10,5 +10,12 @@ public class Exit
     public string exitDescription;
     [TextArea]
     public string exitMessage;
+    public InteractableObject doorObject;
+    public InteractableObject keyObject;
+    public bool locked;
+    [TextArea]
+    public string lockedMessage;
+    [TextArea]
+    public string unlockMessage;
     public Room valueRoom;
 }

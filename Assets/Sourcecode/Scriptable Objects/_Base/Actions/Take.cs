@@ -7,8 +7,6 @@ public class Take : InputAction
 {
     public override void RespondToInput(GameController gameController, string[] seperatedInput)
     {
-        seperatedInput[1] = CombineInput(seperatedInput);
-
         Dictionary<string, string> takeDictionary = gameController.interactableItems.Take(seperatedInput);
         if (takeDictionary != null)
         {

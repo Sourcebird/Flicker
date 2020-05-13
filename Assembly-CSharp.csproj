@@ -74,6 +74,7 @@
     <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\ActionResponses\AddItemResponse.cs" />
     <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\ActionResponses\ChangeRoomResponse.cs" />
     <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\ActionResponses\EatRacoonResponse.cs" />
+    <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\Actions\Combine.cs" />
     <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\Actions\Eat.cs" />
     <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\Actions\Examine.cs" />
     <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\Actions\Go.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\Exit.cs" />
     <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\InputAction.cs" />
     <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\InteractableObject.cs" />
+    <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\Recipe.cs" />
     <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\Room.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>

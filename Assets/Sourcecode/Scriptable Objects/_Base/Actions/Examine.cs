@@ -7,7 +7,6 @@ public class Examine : InputAction
 {
     public override void RespondToInput(GameController gameController, string[] seperatedInput)
     {
-        seperatedInput[1] = CombineInput(seperatedInput);
         gameController.LogAction(gameController.CheckVerbDictionary(gameController.interactableItems.examineDictionary, seperatedInput[0], seperatedInput[1]));
     }
 }

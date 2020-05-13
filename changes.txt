@@ -1,3 +1,17 @@
+> 12 May 2020 | 00:00
+
+--| Fixes
+  - 
+
+--| Changes
+  - Added Text-markup for item names and exits
+  - Added Door Objcects, Exitlocks and Descriptions for Lock&Key 1/2
+  - Added Combine InputAction
+  - Improved TextInput Method for multiworded items and target (i.e combine yellow pancake with green trex doll)
+  - Improved MarkupMethod
+  - Changed AddItemResponse from single item to Array
+  - Rewritten RoomNavigation to check for exit locks
+
 > 11 May 2020 | 17:00
 
 --| Fixes

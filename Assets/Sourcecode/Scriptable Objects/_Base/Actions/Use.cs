@@ -7,8 +7,6 @@ public class Use : InputAction
 {
     public override void RespondToInput(GameController gameController, string[] seperatedInput)
     {
-        seperatedInput[1] = CombineInput(seperatedInput);
-
         gameController.interactableItems.UseItem(seperatedInput);
     }
 }
