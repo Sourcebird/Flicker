@@ -5,42 +5,45 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    [HideInInspector] public RoomNavigation roomNavigation;
-    [HideInInspector] public InteractableItems interactableItems;
-    [HideInInspector] public Player player;
+    [HideInInspector] public NavigationController roomNavigation;
+    [HideInInspector] public InteractionController interactableItems;
     [HideInInspector] public List<string> interactionsInRoom = new List<string>();
+
+    private List<string> actionLog = new List<string>();
+
     public Text displayText;
-    List<string> actionLog = new List<string>();
     public InputAction[] InputActions;
+
+    /* PlayerVars */
+    [HideInInspector] public bool hasRacoon = false;
 
     private void Awake()
     {
-        roomNavigation = GetComponent<RoomNavigation>();
-        interactableItems = GetComponent<InteractableItems>();
-        player = GetComponent<Player>();
+        roomNavigation = GetComponent<NavigationController>();
+        interactableItems = GetComponent<InteractionController>();
     }
 
     private void Start()
     {
-        DisplayRoomText();
-        DisplayLog();
+        PrintRoomText();
+        PrintActionLog();
     }
 
-    public void DisplayLog()
+    public void PrintActionLog()
     {
         string logAsText = string.Join("\n", actionLog.ToArray());
 
         displayText.text = logAsText;
     }
 
-    public void DisplayRoomText()
+    public void PrintRoomText()
     {
         ClearCollections();
         UnpackRoom();
         string joinedInteractions = string.Join("\n", interactionsInRoom.ToArray());
 
         string combinedText = roomNavigation.currentRoom.description + "\n" + joinedInteractions;
-        LogAction(combinedText);
+        AddActionLog(combinedText);
     }
 
     public void DisplayRoomExamine()
@@ -49,13 +52,13 @@ public class GameController : MonoBehaviour
         UnpackRoom();
         string joinedInteractions = string.Join("\n", interactionsInRoom.ToArray());
 
-        string combinedText = "";
+        string combinedText;
         if (roomNavigation.currentRoom.examineDescription != "")
             combinedText = roomNavigation.currentRoom.examineDescription + "\n" + joinedInteractions;
         else
             combinedText = roomNavigation.currentRoom.description + "\n" + joinedInteractions;
 
-        LogAction(combinedText);
+        AddActionLog(combinedText);
     }
 
     private void UnpackRoom()
@@ -94,7 +97,7 @@ public class GameController : MonoBehaviour
             if (verb == "examine" && noun == "room")
             {
                 DisplayRoomExamine();
-                return null;
+                return "!ignore";
             }
 
             return $"You can't {verb} {noun}";
@@ -108,11 +111,16 @@ public class GameController : MonoBehaviour
         roomNavigation.ClearExits();
     }
 
-    public void LogAction(string action)
+    public void AddActionLog(string action)
     {
-        if (action != null)
+        if (action == "!ignore")
+            return;
+
+        if (action != null && action != "")
         {
             actionLog.Add(action + "\n");
         }
+        else
+            Debug.LogWarning("Method 'AddActionLog' was given an invalid string | string is null or empty");
     }
 }
