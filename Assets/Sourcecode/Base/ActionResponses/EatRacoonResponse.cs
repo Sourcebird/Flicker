@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Game/[STORY]ActionResponses/Eat Racoon")]
+[CreateAssetMenu(menuName = "Flicker/Story/Racoon/Eat Racoon")]
 public class EatRacoonResponse : ActionResponse
 {
     [TextArea]
     public string description;
+
+    public override bool CheckActionResponse(GameController gameController)
+    {
+        return true;
+    }
 
     public override bool DoActionResponse(GameController gameController)
     {

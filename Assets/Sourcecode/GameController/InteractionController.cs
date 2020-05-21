@@ -166,6 +166,16 @@ public class InteractionController : MonoBehaviour
         ItemsInRoom.Clear();
     }
 
+    public void DevInspectItem(string[] seperatedInput)
+    {
+        if (seperatedInput.Length >= 2)
+        {
+            InteractableObject interactableObject = GetInteractableObject(seperatedInput[1]);
+            if (interactableObject != null && interactableObject.devcomment != "")
+                gameController.AddActionLog("[Darkyne]: " + interactableObject.devcomment);
+        }
+    }
+
     public Dictionary<string, string> Take (string[] seperatedInput)
     {
         if (seperatedInput == null)
@@ -207,9 +217,24 @@ public class InteractionController : MonoBehaviour
         string item = seperatedInput[1];
         if (ItemsInInventory.Contains(item))
         {
-            if (useDictionary.ContainsKey(item))
+            if (seperatedInput.Length >= 4 && gameController.navigationController.lockDictionary.ContainsKey(seperatedInput[3]))
             {
-                bool actionResult = useDictionary[item].DoActionResponse(gameController);
+                string target = seperatedInput[3];
+
+                Dictionary<string, string> lockDict = gameController.navigationController.lockDictionary;
+                if (lockDict[target] == item)
+                {
+                    gameController.navigationController.AttemptUnlock(item, target);
+                    return;
+                }
+                else
+                {
+                    gameController.AddActionLog("This doesn't seem to be the right thing to do.");
+                }
+            }
+            else if (useDictionary.ContainsKey(item))
+            {
+                bool actionResult = useDictionary[item].CheckActionResponse(gameController);
                 if (!actionResult)
                 {
                     gameController.AddActionLog("Strange. Nothing seems to change.");
@@ -221,6 +246,7 @@ public class InteractionController : MonoBehaviour
                     {
                         gameController.AddActionLog(interactableObject.breakDescription);
                         ItemsInRoom.Remove(item);
+                        useDictionary[item].DoActionResponse(gameController);
                     }
                 }
             }
@@ -231,7 +257,7 @@ public class InteractionController : MonoBehaviour
         }
         else
         {
-            gameController.AddActionLog("You try to use the " + item + " but... Wait. There's no " + item);
+            gameController.AddActionLog("You try to use the " + item + " but... Wait. There's no " + item + " in your pockets.");
         }
     }
 

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Game/InputActions/Combine")]
+[CreateAssetMenu(menuName = "Flicker/Input Actions/Combine")]
 public class Combine : InputAction
 {
     public override void RespondToInput(GameController gameController, string[] seperatedInput)
     {
-        gameController.interactableItems.CombineItems(seperatedInput);
+        gameController.interactionController.CombineItems(seperatedInput);
     }
 }

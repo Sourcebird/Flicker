@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    [HideInInspector] public NavigationController roomNavigation;
-    [HideInInspector] public InteractionController interactableItems;
-    [HideInInspector] public List<string> interactionsInRoom = new List<string>();
+    [HideInInspector] public NavigationController navigationController;
+    [HideInInspector] public InteractionController interactionController;
+    [HideInInspector] public List<string> interactables = new List<string>();
 
     private List<string> actionLog = new List<string>();
 
@@ -19,8 +19,8 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        roomNavigation = GetComponent<NavigationController>();
-        interactableItems = GetComponent<InteractionController>();
+        navigationController = GetComponent<NavigationController>();
+        interactionController = GetComponent<InteractionController>();
     }
 
     private void Start()
@@ -40,9 +40,9 @@ public class GameController : MonoBehaviour
     {
         ClearCollections();
         UnpackRoom();
-        string joinedInteractions = string.Join("\n", interactionsInRoom.ToArray());
+        string joinedInteractions = string.Join("\n", interactables.ToArray());
 
-        string combinedText = roomNavigation.currentRoom.description + "\n" + joinedInteractions;
+        string combinedText = navigationController.currentRoom.description + "\n" + joinedInteractions;
         AddActionLog(combinedText);
     }
 
@@ -50,38 +50,38 @@ public class GameController : MonoBehaviour
     {
         ClearCollections();
         UnpackRoom();
-        string joinedInteractions = string.Join("\n", interactionsInRoom.ToArray());
+        string joinedInteractions = string.Join("\n", interactables.ToArray());
 
         string combinedText;
-        if (roomNavigation.currentRoom.examineDescription != "")
-            combinedText = roomNavigation.currentRoom.examineDescription + "\n" + joinedInteractions;
+        if (navigationController.currentRoom.examineDescription != "")
+            combinedText = navigationController.currentRoom.examineDescription + "\n" + joinedInteractions;
         else
-            combinedText = roomNavigation.currentRoom.description + "\n" + joinedInteractions;
+            combinedText = navigationController.currentRoom.description + "\n" + joinedInteractions;
 
         AddActionLog(combinedText);
     }
 
     private void UnpackRoom()
     {
-        roomNavigation.UnpackExitsInRoom();
-        PrepareObjects(roomNavigation.currentRoom);
+        navigationController.UnpackExitsInRoom();
+        PrepareObjects(navigationController.currentRoom);
     }
 
     private void PrepareObjects(Room currentRoom)
     {
         for (int i = 0; i < currentRoom.interactableObjects.Length; i++)
         {
-            string itemInRoom = interactableItems.GetObjectsNotInInventory(currentRoom, i);
+            string itemInRoom = interactionController.GetObjectsNotInInventory(currentRoom, i);
             if (itemInRoom != null)
             {
-                interactionsInRoom.Add(itemInRoom);
+                interactables.Add(itemInRoom);
             }
 
             InteractableObject interactableInRoom = currentRoom.interactableObjects[i];
             for (int j = 0; j < interactableInRoom.interactions.Length; j++)
             {
                 Interaction interaction = interactableInRoom.interactions[j];
-                interactableItems.AddItemToDictionary(interactableInRoom.noun, interaction);
+                interactionController.AddItemToDictionary(interactableInRoom.noun, interaction);
             }
         }
     }
@@ -106,18 +106,18 @@ public class GameController : MonoBehaviour
 
     private void ClearCollections()
     {
-        interactableItems.ClearCollections();
-        interactionsInRoom.Clear();
-        roomNavigation.ClearExits();
+        interactionController.ClearCollections();
+        interactables.Clear();
+        navigationController.ClearExits();
     }
 
     public void AddActionLog(string action)
     {
-        if (action == "!ignore")
-            return;
-
         if (action != null && action != "")
         {
+            if (action == "!ignore")
+                return;
+
             actionLog.Add(action + "\n");
         }
         else

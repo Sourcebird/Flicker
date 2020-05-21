@@ -8,6 +8,7 @@ public class NavigationController : MonoBehaviour
     public Room currentRoom;
     private GameController gameController;
     private Dictionary<string, Room> exitDictionary = new Dictionary<string, Room>();
+    public Dictionary<string, string> lockDictionary = new Dictionary<string, string>();
 
     private void Awake()
     {
@@ -18,9 +19,16 @@ public class NavigationController : MonoBehaviour
     {
         for (int i = 0; i < currentRoom.exits.Length; i++)
         {
-            exitDictionary.Add(currentRoom.exits[i].keyString, currentRoom.exits[i].valueRoom);
-            string descripton = gameController.interactableItems.GetMarkupString(currentRoom.exits[i].exitDescription, currentRoom.exits[i].keyString, gameController.interactableItems.exitMarkupColor);
-            gameController.interactionsInRoom.Add(descripton);         
+            Exit exit = currentRoom.exits[i];
+            exitDictionary.Add(exit.keyString, exit.valueRoom);
+            string descripton = gameController.interactionController.GetMarkupString(exit.exitDescription, exit.keyString, gameController.interactionController.exitMarkupColor);
+
+            if (exit.exitLock.doorObject != null && exit.exitLock.keyObject != null)
+                lockDictionary.Add(exit.exitLock.doorObject.noun, exit.exitLock.keyObject.noun);
+
+            exit.exitLock.currentState = exit.exitLock.locked;
+
+            gameController.interactables.Add(descripton);         
         }
     }
 
@@ -36,9 +44,10 @@ public class NavigationController : MonoBehaviour
                 Exit exit = currentRoom.exits[i];
                 if (exit.keyString == direction)
                 { 
-                    if (exit.locked == true)
+                    if (exit.exitLock.currentState == true)
                     {
-                        gameController.AddActionLog(exit.lockedMessage);
+                        string description = gameController.interactionController.GetMarkupString(exit.exitLock.lockMessage, exit.exitLock.doorObject.noun, gameController.interactionController.itemMarkupColor);
+                        gameController.AddActionLog(description);
                         return;
                     }
                     else
@@ -51,7 +60,7 @@ public class NavigationController : MonoBehaviour
             currentRoom = exitDictionary[direction];
             if (!silent)
             {
-                if (message != null)
+                if (message != null && message != "")
                     gameController.AddActionLog(message);
                 else
                     gameController.AddActionLog("You head off to the " + direction);
@@ -64,8 +73,37 @@ public class NavigationController : MonoBehaviour
         }
     }
 
+    public void AttemptUnlock(string key, string door)
+    {
+        if (lockDictionary.ContainsKey(door))
+        {
+            for (int i = 0; i < currentRoom.exits.Length; i++)
+            {
+                Exit exit = currentRoom.exits[i];
+                if (exit.exitLock.doorObject.noun == door)
+                {
+                    if (exit.exitLock.currentState == true)
+                    {
+                        if (exit.exitLock.keyObject.noun == key)
+                        {
+                            currentRoom.exits[i].exitLock.currentState = false;
+                            gameController.AddActionLog(exit.exitLock.unlockMessage);
+                        }
+                        else
+                            gameController.AddActionLog("This isn't the right place to use " + key);
+                    }
+                    else
+                        gameController.AddActionLog("This path is allready free");
+                }
+                else
+                    continue;
+            }
+        }
+    }
+
     public void ClearExits()
     {
         exitDictionary.Clear();
+        lockDictionary.Clear();
     }
 }

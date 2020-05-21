@@ -63,27 +63,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Sourcecode\Base\ActionResponse.cs" />
+    <Compile Include="Assets\Sourcecode\Base\ActionResponses\AddItemResponse.cs" />
+    <Compile Include="Assets\Sourcecode\Base\ActionResponses\ChangeRoomResponse.cs" />
+    <Compile Include="Assets\Sourcecode\Base\ActionResponses\EatRacoonResponse.cs" />
+    <Compile Include="Assets\Sourcecode\Base\Actions\Combine.cs" />
+    <Compile Include="Assets\Sourcecode\Base\Actions\Dev.cs" />
+    <Compile Include="Assets\Sourcecode\Base\Actions\Eat.cs" />
+    <Compile Include="Assets\Sourcecode\Base\Actions\Examine.cs" />
+    <Compile Include="Assets\Sourcecode\Base\Actions\Go.cs" />
+    <Compile Include="Assets\Sourcecode\Base\Actions\Inventory.cs" />
+    <Compile Include="Assets\Sourcecode\Base\Actions\Take.cs" />
+    <Compile Include="Assets\Sourcecode\Base\Actions\Use.cs" />
+    <Compile Include="Assets\Sourcecode\Base\Exit.cs" />
+    <Compile Include="Assets\Sourcecode\Base\ExitLock.cs" />
+    <Compile Include="Assets\Sourcecode\Base\InputAction.cs" />
+    <Compile Include="Assets\Sourcecode\Base\InteractableObject.cs" />
+    <Compile Include="Assets\Sourcecode\Base\Interaction.cs" />
+    <Compile Include="Assets\Sourcecode\Base\Recipe.cs" />
+    <Compile Include="Assets\Sourcecode\Base\Room.cs" />
     <Compile Include="Assets\Sourcecode\GameController\GameController.cs" />
     <Compile Include="Assets\Sourcecode\GameController\InputController.cs" />
     <Compile Include="Assets\Sourcecode\GameController\InteractionController.cs" />
     <Compile Include="Assets\Sourcecode\GameController\NavigationController.cs" />
-    <Compile Include="Assets\Sourcecode\Interaction.cs" />
-    <Compile Include="Assets\Sourcecode\Inventory.cs" />
-    <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\ActionResponse.cs" />
-    <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\ActionResponses\AddItemResponse.cs" />
-    <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\ActionResponses\ChangeRoomResponse.cs" />
-    <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\ActionResponses\EatRacoonResponse.cs" />
-    <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\Actions\Combine.cs" />
-    <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\Actions\Eat.cs" />
-    <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\Actions\Examine.cs" />
-    <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\Actions\Go.cs" />
-    <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\Actions\Take.cs" />
-    <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\Actions\Use.cs" />
-    <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\Exit.cs" />
-    <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\InputAction.cs" />
-    <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\InteractableObject.cs" />
-    <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\Recipe.cs" />
-    <Compile Include="Assets\Sourcecode\Scriptable Objects\_Base\Room.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
@@ -708,6 +710,9 @@
     <Reference Include="UnityEngine.SpatialTracking">
       <HintPath>C:/Users/Kaiser/Data/Profile/Development/Flicker/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll</HintPath>
     </Reference>
+    <Reference Include="Enhancer.Editor">
+      <HintPath>C:/Users/Kaiser/Data/Profile/Development/Flicker/Library/ScriptAssemblies/Enhancer.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Mathematics.Editor">
       <HintPath>C:/Users/Kaiser/Data/Profile/Development/Flicker/Library/ScriptAssemblies/Unity.Mathematics.Editor.dll</HintPath>
     </Reference>
@@ -731,9 +736,6 @@
     </Reference>
     <Reference Include="com.unity.multiplayer-hlapi.Runtime">
       <HintPath>C:/Users/Kaiser/Data/Profile/Development/Flicker/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Enhancer.Editor">
-      <HintPath>C:/Users/Kaiser/Data/Profile/Development/Flicker/Library/ScriptAssemblies/Enhancer.Editor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup></ItemGroup>

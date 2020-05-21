@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Game/InputActions/Go")]
+[CreateAssetMenu(menuName = "Flicker/Input Actions/Go")]
 public class Go : InputAction
 {
     public override void RespondToInput(GameController gameController, string[] seperatedInput)
     {
-        gameController.roomNavigation.AttemptToChangeRooms(seperatedInput[1]);
+        gameController.navigationController.AttemptToChangeRooms(seperatedInput[1]);
     }
 }

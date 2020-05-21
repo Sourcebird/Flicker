@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Game/InputActions/Eat")]
+[CreateAssetMenu(menuName = "Flicker/Input Actions/Eat")]
 public class Eat : InputAction
 {
     public override void RespondToInput(GameController gameController, string[] seperatedInput)
     {
-        gameController.interactableItems.EatItem(seperatedInput);
+        gameController.interactionController.EatItem(seperatedInput);
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Game/Recipe")]
+[CreateAssetMenu(menuName = "Flicker/Game/Recipe")]
 public class Recipe : ScriptableObject
 {
     public InteractableObject ingredientOne;

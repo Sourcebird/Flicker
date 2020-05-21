@@ -52,7 +52,7 @@ public class InputController : MonoBehaviour
         }
 
         if (hit == false && seperatedInput[0] != "")
-            gameController.AddActionLog("Invalid command: " + seperatedInput[0]);
+            gameController.AddActionLog("Unknown command: " + seperatedInput[0]);
 
         InputComplete();
     }
