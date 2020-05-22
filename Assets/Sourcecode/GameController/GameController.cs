@@ -31,30 +31,25 @@ public class GameController : MonoBehaviour
 
     public void PrintActionLog()
     {
-        string logAsText = string.Join("\n", actionLog.ToArray());
+        string joinedLog = string.Join("\n", actionLog.ToArray());
 
-        displayText.text = logAsText;
+        displayText.text = joinedLog;
     }
 
-    public void PrintRoomText()
-    {
-        ClearCollections();
-        UnpackRoom();
-        string joinedInteractions = string.Join("\n", interactables.ToArray());
-
-        string combinedText = navigationController.currentRoom.description + "\n" + joinedInteractions;
-        AddActionLog(combinedText);
-    }
-
-    public void DisplayRoomExamine()
+    public void PrintRoomText(bool examine = false)
     {
         ClearCollections();
         UnpackRoom();
         string joinedInteractions = string.Join("\n", interactables.ToArray());
 
         string combinedText;
-        if (navigationController.currentRoom.examineDescription != "")
-            combinedText = navigationController.currentRoom.examineDescription + "\n" + joinedInteractions;
+        if (examine == true)
+        {
+            if (navigationController.currentRoom.examineDescription != "")
+                combinedText = navigationController.currentRoom.examineDescription + "\n" + joinedInteractions;
+            else
+                combinedText = navigationController.currentRoom.description + "\n" + joinedInteractions;
+        }
         else
             combinedText = navigationController.currentRoom.description + "\n" + joinedInteractions;
 
@@ -73,15 +68,13 @@ public class GameController : MonoBehaviour
         {
             string itemInRoom = interactionController.GetObjectsNotInInventory(currentRoom, i);
             if (itemInRoom != null)
-            {
                 interactables.Add(itemInRoom);
-            }
 
-            InteractableObject interactableInRoom = currentRoom.interactableObjects[i];
-            for (int j = 0; j < interactableInRoom.interactions.Length; j++)
+            InteractableObject interactableObject = currentRoom.interactableObjects[i];
+            for (int j = 0; j < interactableObject.interactions.Length; j++)
             {
-                Interaction interaction = interactableInRoom.interactions[j];
-                interactionController.AddItemToDictionary(interactableInRoom.noun, interaction);
+                Interaction interaction = interactableObject.interactions[j];
+                interactionController.AddItemToDictionary(interactableObject.noun, interaction);
             }
         }
     }
@@ -96,19 +89,12 @@ public class GameController : MonoBehaviour
         {
             if (verb == "examine" && noun == "room")
             {
-                DisplayRoomExamine();
+                PrintRoomText(true);
                 return "!ignore";
             }
 
             return $"You can't {verb} {noun}";
         }
-    }
-
-    private void ClearCollections()
-    {
-        interactionController.ClearCollections();
-        interactables.Clear();
-        navigationController.ClearExits();
     }
 
     public void AddActionLog(string action)
@@ -122,5 +108,12 @@ public class GameController : MonoBehaviour
         }
         else
             Debug.LogWarning("Method 'AddActionLog' was given an invalid string | string is null or empty");
+    }
+
+    private void ClearCollections()
+    {
+        interactionController.ClearCollections();
+        interactables.Clear();
+        navigationController.ClearExits();
     }
 }

@@ -71,6 +71,7 @@
     <Compile Include="Assets\Sourcecode\Base\Actions\Dev.cs" />
     <Compile Include="Assets\Sourcecode\Base\Actions\Eat.cs" />
     <Compile Include="Assets\Sourcecode\Base\Actions\Examine.cs" />
+    <Compile Include="Assets\Sourcecode\Base\Actions\ExitGame.cs" />
     <Compile Include="Assets\Sourcecode\Base\Actions\Go.cs" />
     <Compile Include="Assets\Sourcecode\Base\Actions\Inventory.cs" />
     <Compile Include="Assets\Sourcecode\Base\Actions\Take.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Assets\Sourcecode\Base\Exit.cs" />
     <Compile Include="Assets\Sourcecode\Base\ExitLock.cs" />
     <Compile Include="Assets\Sourcecode\Base\InputAction.cs" />
+    <Compile Include="Assets\Sourcecode\Base\InteractableContainer.cs" />
     <Compile Include="Assets\Sourcecode\Base\InteractableObject.cs" />
     <Compile Include="Assets\Sourcecode\Base\Interaction.cs" />
     <Compile Include="Assets\Sourcecode\Base\Recipe.cs" />

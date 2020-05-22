@@ -23,8 +23,12 @@ public class NavigationController : MonoBehaviour
             exitDictionary.Add(exit.keyString, exit.valueRoom);
             string descripton = gameController.interactionController.GetMarkupString(exit.exitDescription, exit.keyString, gameController.interactionController.exitMarkupColor);
 
-            if (exit.exitLock.doorObject != null && exit.exitLock.keyObject != null)
-                lockDictionary.Add(exit.exitLock.doorObject.noun, exit.exitLock.keyObject.noun);
+            ExitLock exitLock = exit.exitLock;
+            if (exitLock.doorObject != null && exitLock.doorObject.noun != "" && exitLock.keyObject != null && exitLock.keyObject.noun != "")
+            {
+                lockDictionary.Add(exitLock.doorObject.noun, exitLock.keyObject.noun);
+                Debug.LogWarning(exitLock.doorObject.noun + "  |  " + exitLock.keyObject.noun);
+            }
 
             exit.exitLock.currentState = exit.exitLock.locked;
 
@@ -80,11 +84,11 @@ public class NavigationController : MonoBehaviour
             for (int i = 0; i < currentRoom.exits.Length; i++)
             {
                 Exit exit = currentRoom.exits[i];
-                if (exit.exitLock.doorObject.noun == door)
+                if (exit.exitLock.doorObject != null && exit.exitLock.doorObject.noun == door)
                 {
                     if (exit.exitLock.currentState == true)
                     {
-                        if (exit.exitLock.keyObject.noun == key)
+                        if (exit.exitLock.keyObject != null && exit.exitLock.keyObject.noun == key)
                         {
                             currentRoom.exits[i].exitLock.currentState = false;
                             gameController.AddActionLog(exit.exitLock.unlockMessage);

@@ -124,19 +124,16 @@ public class InteractionController : MonoBehaviour
 
     public void AddItem(InteractableObject item, bool silent)
     {
-        if (item != null)
+        if (item != null && itemList.Contains(item))
         {
-            if (itemList.Contains(item))
+            ItemsInInventory.Add(item.noun);
+            foreach (Interaction interaction in item.interactions)
             {
-                ItemsInInventory.Add(item.noun);
-                foreach (Interaction interaction in item.interactions)
-                {
-                    AddItemToDictionary(item.noun, interaction);
-                }
-
-                if (!silent)
-                    gameController.AddActionLog(item.description);
+                AddItemToDictionary(item.noun, interaction);
             }
+
+            if (!silent)
+                gameController.AddActionLog(item.description);
         }
     }
 
@@ -156,14 +153,6 @@ public class InteractionController : MonoBehaviour
             default:
                 break;
         }
-    }
-
-    public void ClearCollections()
-    {
-        examineDictionary.Clear();
-        takeDictionary.Clear();
-        eatDictionary.Clear();
-        ItemsInRoom.Clear();
     }
 
     public void DevInspectItem(string[] seperatedInput)
@@ -357,15 +346,26 @@ public class InteractionController : MonoBehaviour
 
     private Interaction GetInteraction(InteractableObject interactableObject, string keyword)
     {
-        for (int i = 0; i < interactableObject.interactions.Length; i++)
+        if (interactableObject != null && interactableObject.interactions.Length > 0)
         {
-            Interaction interaction = interactableObject.interactions[i];
-            if (interaction.inputAction.keyword == keyword)
-                return interaction;
-            else
-                continue;
+            for (int i = 0; i < interactableObject.interactions.Length; i++)
+            {
+                Interaction interaction = interactableObject.interactions[i];
+                if (interaction.inputAction.keyword == keyword)
+                    return interaction;
+                else
+                    continue;
+            }
         }
 
         return null;
+    }
+
+    public void ClearCollections()
+    {
+        examineDictionary.Clear();
+        takeDictionary.Clear();
+        eatDictionary.Clear();
+        ItemsInRoom.Clear();
     }
 }
