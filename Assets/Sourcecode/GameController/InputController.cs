@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
@@ -54,6 +55,7 @@ public class InputController : MonoBehaviour
         if (hit == false && seperatedInput[0] != "")
             gameController.AddActionLog("Unknown command: " + seperatedInput[0]);
 
+        Debug.LogWarning(string.Join(" ", seperatedInput));
         InputComplete();
     }
 
